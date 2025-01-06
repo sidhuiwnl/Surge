@@ -9,6 +9,8 @@ import { UTApi } from "uploadthing/server";
 import dotenv from "dotenv";
 import {prisma} from "./lib/prisma";
 import { UploadFileResult } from "uploadthing/types";
+import ffmpeg from 'fluent-ffmpeg';
+import * as stream from "node:stream";
 
 dotenv.config();
 
@@ -42,7 +44,44 @@ const wss = new ws.Server({server });
 
 const utapi = new UTApi();
 
-const videoChunks : Buffer[] = [];
+let videoChunks : Buffer[] = [];
+
+async function convertBufferToMP4(inputBuffer: Buffer): Promise<Buffer> {
+    return new Promise((resolve, reject) => {
+        const bufferStream = new stream.PassThrough();
+        const chunks: Buffer[] = [];
+
+        const outputStream = new stream.PassThrough();
+
+
+        outputStream.on('data', (chunk) => {
+            chunks.push(chunk);
+        });
+
+        outputStream.on('end', () => {
+            resolve(Buffer.concat(chunks));
+        });
+
+        ffmpeg(bufferStream)
+            .toFormat('mp4')
+            .outputOptions([
+                '-movflags frag_keyframe+empty_moov',
+                '-c:v libx264',
+                '-preset ultrafast',
+                '-c:a aac'
+            ])
+            .on("end",() =>{
+                console.log("end")
+            })
+            .on('error', (err) => {
+                console.error('FFmpeg error:', err);
+                reject(err);
+            })
+            .pipe(outputStream);
+
+        bufferStream.end(inputBuffer);
+    });
+}
 
 wss.on("connection", (socket) => {
 
@@ -63,12 +102,15 @@ wss.on("connection", (socket) => {
             const videoBuffer = Buffer.concat(videoChunks);
 
             try {
-                const videoBlob = new Blob([videoBuffer], {
-                    type : "video/webm"
+                console.log("Converting to MP4...");
+                const mp4Buffer = await convertBufferToMP4(videoBuffer);
+
+                const videoBlob = new Blob([mp4Buffer], {
+                    type : "video/mp4"
                 })
 
-                const videoFile = new File([videoBlob], "output.webm", {
-                    type: "video/webm",
+                const videoFile = new File([videoBlob], "output.mp4", {
+                    type: "video/mp4",
                 });
                 const response = await utapi.uploadFiles([videoFile])
                 console.log("Uploaded file details:", response);
@@ -81,6 +123,7 @@ wss.on("connection", (socket) => {
             }
 
         }
+        videoChunks = [];
     });
 
     socket.on("error", (error) => {
