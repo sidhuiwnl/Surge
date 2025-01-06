@@ -1,0 +1,50 @@
+
+FROM node:18
+
+
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+ENV DISPLAY=:99
+
+
+WORKDIR /src
+
+
+RUN apt-get update && apt-get install -y \
+    curl \
+    gnupg \
+    libnss3 \
+    libxss1 \
+    libasound2 \
+    libatk1.0-0 \
+    libatk-bridge2.0-0 \
+    libgtk-3-0 \
+    xvfb \
+    --no-install-recommends
+
+
+RUN curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /usr/share/keyrings/google-archive-keyring.gpg \
+    && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-archive-keyring.gpg] http://dl.google.com/linux/chrome/deb/ stable main" | tee /etc/apt/sources.list.d/google-chrome.list \
+    && apt-get update \
+    && apt-get install -y google-chrome-stable --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
+
+
+RUN useradd -ms /bin/bash puppeteer \
+    && chown -R puppeteer:puppeteer /src
+
+
+COPY --chown=puppeteer:puppeteer package*.json ./
+RUN npm install
+
+
+COPY --chown=puppeteer:puppeteer . .
+
+
+USER puppeteer
+
+
+RUN echo '#!/bin/bash\nXvfb :99 -screen 0 1280x1024x24 &\nexec npm run dev' > /src/docker-entrypoint.sh \
+    && chmod +x /src/docker-entrypoint.sh
+
+
+ENTRYPOINT ["/src/docker-entrypoint.sh"]

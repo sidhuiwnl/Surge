@@ -1,0 +1,15 @@
+{
+  "name": "Surge",
+  "version": "1.0.0",
+  "description": "Meeting Bot",
+  "manifest_version": 3,
+  "author": "Sidharth Babu",
+  "icons": {
+    "16": "./logo-1.png"
+  },
+  "action": {
+    "default_popup": "index.html",
+    "default_title": "The Meeting Bot"
+  }
+
+}

@@ -1,0 +1,23 @@
+{
+  "name": "spawner",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsc -b && node dist/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/selenium-webdriver": "^4.1.27",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "puppeteer": "^23.11.1",
+    "puppeteer-core": "^23.11.1",
+    "selenium-webdriver": "^4.27.0",
+    "typescript": "^5.7.2"
+  }
+}
