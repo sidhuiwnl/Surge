@@ -148,6 +148,57 @@ async function addRecordings(videoData : UploadFileResult){
     console.log("Recordings added")
 }
 
+app.post("/delete",async (req : Request,res : Response) =>{
+    const { userId, recordingKey } = req.body;
+
+    if(!userId || !recordingKey){
+        res.status(400).json({
+            message : "Unauthorised"
+        })
+        return
+    }
+
+    if(userId !== userId){
+        res.status(400).json({
+            message : "Unauthorised"
+        })
+    }
+
+    try{
+        const userExist = await prisma.user.findUnique({
+            where : {
+                id : userId
+            }
+        })
+
+        if(!userExist){
+            res.status(400).json({
+                message : "Unauthorised"
+            })
+            return
+        }
+
+        await utapi.deleteFiles([recordingKey]);
+        const updatedRecordings = await prisma.recordings.delete({
+            where : {
+                id : recordingKey
+            }
+            }
+        )
+        res.status(200).json({
+            message : "Recording deleted",
+            recordings : updatedRecordings
+        })
+    }catch (error){
+        res.status(500).json({
+            message : "Internal server error"
+        })
+    }
+
+
+
+
+})
 
 app.post("/recordings",async (req  : Request,res : Response) => {
     const userId = req.body;
