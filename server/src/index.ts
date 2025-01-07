@@ -114,8 +114,8 @@ async function convertBufferToMP4(inputBuffer: Buffer): Promise<Buffer> {
 
 wss.on("connection", (socket,request) => {
     console.log("Client connected");
-    console.log(request.url)
     const connectionType = new URL(request.url!,`http://${request.headers.host}`).searchParams.get("type");
+    console.log(connectionType)
     console.log(`New ${connectionType || 'unknown'} connection`);
 
     if(connectionType === "media"){

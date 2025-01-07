@@ -8,16 +8,18 @@ export default function RecordingStatus() {
 
     console.log(recordingStatus)
     useEffect(() => {
-        const ws = new WebSocket(`ws://localhost:8080?type="status`)
+        const ws = new WebSocket(`ws://127.0.0.1:8080?type=status`)
 
         ws.onopen = () =>{
             console.log("connected")
-            setRecordingStatus("connected")
+            setConnectionStatus("connected")
         }
         ws.onmessage = (event) =>{
            try {
                 const data = JSON.parse(event.data)
+
                 setRecordingStatus(data)
+               setConnectionStatus("connected")
            }catch (error){
                console.log(error)
            }
