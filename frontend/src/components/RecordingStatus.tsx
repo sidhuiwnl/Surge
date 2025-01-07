@@ -1,47 +1,91 @@
-import {useEffect,useState} from "react";
+import {useEffect,useState,useRef} from "react";
+
+import {useUser} from "@clerk/clerk-react";
+
+interface RecordingStatus {
+    status: string;
+    duration?: string;
+    bytesReceived?: number;
+    fileUrl?: string;
+    error?: string;
+}
+
+
+type ConnectionStatus = "connecting" | "connected" | "disconnected" | "error";
+
+const WEBSOCKET_URL = "ws://127.0.0.1:8080";
+const RECONNECT_DELAY = 5000;
 
 
 export default function RecordingStatus() {
-    const[recordingStatus, setRecordingStatus] = useState("");
-    const[,setSocket] = useState<WebSocket | null>(null);
-    const[connectionStatus, setConnectionStatus] = useState<"connecting" | "connected" | "disconnected" | "error">("connecting");
+    const { user,isLoaded,isSignedIn } = useUser();
+    const[recordingStatus, setRecordingStatus] = useState<RecordingStatus | null>(null);
+    const[connectionStatus, setConnectionStatus] = useState<ConnectionStatus>("connecting");
+
+    const reconnectRef = useRef<NodeJS.Timeout>()
+    const socketRef = useRef<WebSocket | null>(null);
+    const connectionAttemptedRef = useRef(false);
+
+
+    function connectWebSocket(){
+        if(!isSignedIn || !user?.id){
+            return;
+        }
+
+        try{
+            const ws = new WebSocket(`${WEBSOCKET_URL}?type=status&userId=${user?.id}`);
+            socketRef.current = ws;
+
+            ws.onopen = () =>{
+                setConnectionStatus("connected")
+
+            }
+            ws.onmessage = (event) =>{
+                try {
+                    const data = JSON.parse(event.data) as RecordingStatus;
+                    setRecordingStatus(data);
+                } catch (error) {
+                    console.error("Failed to parse WebSocket message:", error);
+                }
+            }
+
+            ws.onclose = () =>{
+                setConnectionStatus("disconnected");
+                socketRef.current = null;
+
+                reconnectRef.current = setTimeout(() => {
+                    connectWebSocket();
+                }, RECONNECT_DELAY);
+
+            }
+            ws.onerror = (error) => {
+                console.error("WebSocket Error:", error);
+                setConnectionStatus("error");
+            };
+        }catch (error){
+            console.error("Failed to connect to WebSocket:", error);
+            setConnectionStatus("error");
+        }
+    }
 
     console.log(recordingStatus)
     useEffect(() => {
-        const ws = new WebSocket(`ws://127.0.0.1:8080?type=status`)
 
-        ws.onopen = () =>{
-            console.log("connected")
-            setConnectionStatus("connected")
-        }
-        ws.onmessage = (event) =>{
-           try {
-                const data = JSON.parse(event.data)
+        if(!isLoaded || !connectionAttemptedRef ) return;
 
-                setRecordingStatus(data)
-                setConnectionStatus("connected")
-           }catch (error){
-               console.log(error)
-           }
-        }
-        ws.onclose = () => {
-            console.log('WebSocket Disconnected');
-            setConnectionStatus("disconnected");
-        };
+        connectionAttemptedRef.current = true;
 
-        ws.onerror = (error) => {
-            console.error('WebSocket Error:', error);
-            setConnectionStatus("error");
-        };
+        connectWebSocket()
 
-
-        setSocket(ws)
         return () => {
-            if (ws) {
-                ws.close();
+            if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
+                socketRef.current.close();
+            }
+            if(reconnectRef.current){
+                clearTimeout(reconnectRef.current)
             }
         };
-    },[])
+    },[isLoaded,isSignedIn,user?.id])
     return (
         <div>
             <h1 className="text-xl font-semibold text-white">Recording Status</h1>
@@ -55,6 +99,7 @@ export default function RecordingStatus() {
                             connectionStatus === "error" ? "text-red-500" : "text-blue-500"
                 }`}>
             {connectionStatus}
+
           </span>
             </div>
         </div>

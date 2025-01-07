@@ -67,8 +67,9 @@ function webScript(){
 
             signalingSocket.onerror = (error) => {
                 console.error("WebSocket error:", error);
-                signalingSocket.close();
                 recorder.stop();
+                signalingSocket.close();
+
             };
             signalingSocket.onclose = () => {
                 console.log("WebSocket connection closed");

@@ -21,8 +21,8 @@ async function getBrowser(){
             "--use-fake-ui-for-media-stream",
             "--mute-audio",
             `--use-file-for-fake-audio-capture=${audioPath}`,
-            "--window-position=-32000,-32000",
-            "--start-minimized"
+            // "--window-position=-32000,-32000",
+            // "--start-minimized"
         ]
     })
 

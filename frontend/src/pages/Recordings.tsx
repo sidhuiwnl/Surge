@@ -5,13 +5,14 @@ import VideoCard from "@/components/VideoCard.tsx";
 import {RecordingsResponseType} from "@/types/RecordingsResponseType.ts";
 import {useCallback} from "react";
 
+
 export default function Recordings(){
-    let userData = useUser();
+    const userData = useUser();
     const [videos,setVideos] = useState<RecordingsResponseType[]>([]);
 
     const getVideos = useCallback(async () =>{
         if(userData){
-            const response =  await axios.post(`${import.meta.env.VITE_WEBSOCKET_BASE_URL}/recordings`,{
+            const response =  await axios.post(`${import.meta.env.VITE_WEBSOCKET_BASE_URL}/api/user/recordings`,{
                 userId :  userData.user?.id
             })
             setVideos(response.data.recordings)
@@ -34,6 +35,7 @@ export default function Recordings(){
             <div className="flex flex-wrap gap-5">
                     <VideoCard videoData={videos}/>
             </div>
+
         </div>
     )
 }
