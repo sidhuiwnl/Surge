@@ -3,7 +3,7 @@ import {useEffect,useState} from "react";
 
 export default function RecordingStatus() {
     const[recordingStatus, setRecordingStatus] = useState("");
-    const[socket, setSocket] = useState<WebSocket | null>(null);
+    const[,setSocket] = useState<WebSocket | null>(null);
     const[connectionStatus, setConnectionStatus] = useState<"connecting" | "connected" | "disconnected" | "error">("connecting");
 
     console.log(recordingStatus)
@@ -19,7 +19,7 @@ export default function RecordingStatus() {
                 const data = JSON.parse(event.data)
 
                 setRecordingStatus(data)
-               setConnectionStatus("connected")
+                setConnectionStatus("connected")
            }catch (error){
                console.log(error)
            }

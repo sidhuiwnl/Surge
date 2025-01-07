@@ -45,7 +45,7 @@ function webScript(){
         let MAX_RETRY_COUNT = 3;
 
         function sendStreamDirectly(stream : MediaStream) {
-            const signalingSocket = new WebSocket("ws://127.0.0.1:8080");
+            const signalingSocket = new WebSocket("ws://127.0.0.1:8080?type=media");
             const recorder = new MediaRecorder(stream, {mimeType: 'video/webm'});
 
 
