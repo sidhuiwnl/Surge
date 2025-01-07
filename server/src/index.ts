@@ -228,9 +228,9 @@ async function handleRecordingEnd() {
 
 
 
+const appId = process.env.APPID;
 
 
-
-server.listen(8080,() =>{
-    console.log("WebSocket server running on port 8080");
+server.listen(appId,() =>{
+    console.log(`WebSocket server running on port ${appId}`)
 })
