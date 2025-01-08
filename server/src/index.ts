@@ -30,7 +30,7 @@ app.use(
 app.use("/api/user",userRoute);
 
 
-let userId : string | null = null;
+
 
 
 
@@ -40,6 +40,7 @@ const utapi = new UTApi();
 
 const clients = new Set<ws>();
 const mediaStreams = new Set<ws>();
+export const userId = new Set<string>();
 
 let videoChunks : Buffer[] = [];
 
@@ -110,7 +111,7 @@ async function convertBufferToMP4(inputBuffer: Buffer): Promise<Buffer> {
             ])
             .on("end",async () =>{
                 console.log("end")
-
+                await handleRecordingEnd()
             })
             .on('error', (err) => {
                 console.error('FFmpeg error:', err);
@@ -128,13 +129,19 @@ async function convertBufferToMP4(inputBuffer: Buffer): Promise<Buffer> {
 
 
 wss.on("connection", (socket,request) => {
+    console.log(request.url)
+    const url = new URL(request.url!,`http://${request.headers.host}`);
+
     console.log("Client connected");
-    const connectionType = new URL(request.url!,`http://${request.headers.host}`).searchParams.get("type");
-    userId = new URL(request.url!,`http://${request.headers.host}`).searchParams.get("userId");
+
+    const connectionType = url.searchParams.get("type");
+
     console.log(userId);
     console.log(`New ${connectionType || 'unknown'} connection`);
 
-    if(connectionType === "media"){
+
+
+    if(connectionType === "media" && userId){
         handleConnectionMedia(socket);
     }else {
         handleClientConnectionStatus(socket);
@@ -172,6 +179,8 @@ function handleConnectionMedia(socket : ws  ){
     });
 }
 
+
+
 function handleClientConnectionStatus(socket : ws){
     clients.add(socket);
 
@@ -183,6 +192,7 @@ function handleClientConnectionStatus(socket : ws){
 
     socket.on("close", () => {
         clients.delete(socket);
+
     });
 
     socket.on("error", (error) => {
@@ -195,7 +205,7 @@ function handleClientConnectionStatus(socket : ws){
 
 
 async function handleRecordingEnd() {
-    if (mediaStreams.size === 0 && videoChunks.length > 0) {
+    if (mediaStreams.size === 0 && videoChunks.length > 0 && userId) {
         broadCastStatus("Processing recording");
         recordingState.isRecording = false;
 
@@ -207,8 +217,12 @@ async function handleRecordingEnd() {
             const videoFile = new File([videoBlob], "output.mp4", { type: "video/mp4" });
 
             const response = await utapi.uploadFiles([videoFile]);
-            if (response[0]) {
-                await addRecordings(response[0],userId);
+            if (response[0] && userId.values()) {
+                const id = JSON.stringify(userId.values());
+                console.log(id)
+                await addRecordings(response[0], id);
+
+
                 broadCastStatus("Recording completed");
             }
         } catch (error) {

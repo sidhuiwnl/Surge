@@ -4,7 +4,7 @@ import { useState, useCallback } from "react"
 import axios from "axios"
 import { toast } from "sonner"
 import SelectDemo from "@/components/Select.tsx";
-// import RecordingStatus from "@/components/RecordingStatus.tsx";
+import RecordingStatus from "@/components/RecordingStatus.tsx";
 
 export default function InputDemo() {
     const [link, setLink] = useState("");
@@ -54,9 +54,9 @@ export default function InputDemo() {
                         Send
                     </button>
                 </div>
-                {/*<div className="absolute bottom-5 right-1 flex justify-center">*/}
-                {/*    <RecordingStatus/>*/}
-                {/*</div>*/}
+                <div className="absolute bottom-5 right-1 flex justify-center">
+                    <RecordingStatus/>
+                </div>
             </div>
 
 

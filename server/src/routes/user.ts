@@ -2,7 +2,7 @@ import {Request, Response} from "express";
 import {prisma} from "../lib/prisma";
 import {Router} from "express";
 import { UTApi } from "uploadthing/server";
-
+import {userId} from "../index";
 const router = Router();
 
 const utapi = new UTApi();
@@ -117,6 +117,7 @@ router.get("/getuser",async (req: Request, res : Response) => {
 
 router.post("/addUser",async (req : Request,res : Response ) =>{
     const userData = req.body;
+    userId.add(userData.id);
     if(!userData.id){
         res.status(400).json({
             message : "Unauthorised"
