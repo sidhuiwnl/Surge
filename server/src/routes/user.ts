@@ -91,11 +91,32 @@ router.post("/recordings",async (req  : Request,res : Response) => {
     }
 })
 
+router.get("/getuser",async (req: Request, res : Response) => {
+    const { id }    = req.query
+    console.log(id)
+    if(!id){
+        res.status(400).json({
+            message : "Unauthorised user with id "
+        })
+    }
+
+
+    const userExists = await prisma.user.findUnique({
+        where : {
+            id : JSON.stringify(id)
+        }
+    })
+
+    res.status(200).json({
+        exists : !!userExists
+    })
+
+})
+
 
 
 router.post("/addUser",async (req : Request,res : Response ) =>{
     const userData = req.body;
-    const userId = userData.id;
     if(!userData.id){
         res.status(400).json({
             message : "Unauthorised"

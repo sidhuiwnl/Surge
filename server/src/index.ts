@@ -108,7 +108,7 @@ async function convertBufferToMP4(inputBuffer: Buffer): Promise<Buffer> {
                 '-preset ultrafast',
                 '-c:a aac'
             ])
-            .on("end",() =>{
+            .on("end",async () =>{
                 console.log("end")
 
             })
@@ -131,6 +131,7 @@ wss.on("connection", (socket,request) => {
     console.log("Client connected");
     const connectionType = new URL(request.url!,`http://${request.headers.host}`).searchParams.get("type");
     userId = new URL(request.url!,`http://${request.headers.host}`).searchParams.get("userId");
+    console.log(userId);
     console.log(`New ${connectionType || 'unknown'} connection`);
 
     if(connectionType === "media"){
@@ -228,9 +229,9 @@ async function handleRecordingEnd() {
 
 
 
-const appId = process.env.APPID;
 
 
-server.listen(appId,() =>{
-    console.log(`WebSocket server running on port ${appId}`)
+
+server.listen(8080,() =>{
+    console.log(`WebSocket server running on port 8080`)
 })

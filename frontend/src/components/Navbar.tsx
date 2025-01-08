@@ -2,15 +2,14 @@
 
 import {NavLink} from "react-router";
 import {SignedIn, SignedOut, SignUpButton, UserButton} from "@clerk/clerk-react";
-import {useUser,useSession} from "@clerk/clerk-react";
+import {useUser} from "@clerk/clerk-react";
 import { useEffect} from "react";
 import axios from "axios";
 
 
 export default function Navbar() {
-    const  {isLoaded ,session} = useSession();
-    const {  user } = useUser(); // Check loading state and user data
 
+    const { isLoaded, user } = useUser();
     const userDetails = {
         id: user?.id,
         firstName: user?.firstName,
@@ -20,14 +19,33 @@ export default function Navbar() {
     };
 
     async function addUser() {
-        if (user && !session?.id) {
-            const response = await axios.post(`${import.meta.env.VITE_WEBSOCKET_BASE_URL}/addUser`, userDetails);
-            console.log(response);
+        try {
+            if (user) {
+                const response = await axios.post(`${import.meta.env.VITE_WEBSOCKET_BASE_URL}/api/user/addUser`, userDetails);
+                console.log(response);
+            }
+        }catch (error) {
+            console.error("Error adding user:", error );
         }
     }
 
+    async function checkUser(){
+        if(user && user.id){
+            console.log(user.id);
+            await axios
+                .get(`${import.meta.env.VITE_WEBSOCKET_BASE_URL}/api/user/getuser?id=${user.id}`)
+                .then((response) => {
+                    if(!response.data.exists){
+                        addUser()
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error checking user:", error.response?.data || error.message);
+                })
+        }
+    }
     useEffect(() => {
-        addUser();
+        checkUser();
     }, [user]);
 
     return (

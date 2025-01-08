@@ -21,8 +21,8 @@ async function getBrowser(){
             "--use-fake-ui-for-media-stream",
             "--mute-audio",
             `--use-file-for-fake-audio-capture=${audioPath}`,
-            // "--window-position=-32000,-32000",
-            // "--start-minimized"
+            "--window-position=-32000,-32000",
+            "--start-minimized"
         ]
     })
 
@@ -114,9 +114,9 @@ app.post("/getMeetId",(req : Request,res : Response) =>{
 
 
 
-getMeet("https://meet.google.com/nhx-tapc-opw");
+// getMeet("https://meet.google.com/nhx-tapc-opw");
 
 
-// app.listen(3000, () => {
-//     console.log("Server is running on port 3000");
-// })
+app.listen(3000, () => {
+    console.log("Server is running on port 3000");
+})
