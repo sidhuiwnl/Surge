@@ -1,5 +1,8 @@
 import { cn } from "@/lib/utils";
 import Marquee from "@/components/ui/marquee";
+import {Card} from "@/components/ui/card.tsx";
+import {Badge} from "@/components/ui/badge.tsx";
+import {DatabaseIcon} from "lucide-react";
 
 const reviews = [
     {
@@ -90,4 +93,32 @@ export function MarqueeDemo() {
 
         </div>
     );
+}
+
+export function NonVideoCard(){
+    return(
+        <div className="w-screen flex flex-col items-center justify-center">
+            <Card className="w-[1000px] h-[350px] bg-neutral-900 border-none p-2">
+                <div className="flex flex-col gap-3 w-full border-white h-full bg-zinc-950 rounded-xl">
+                    <div className="p-4">
+                        <Badge className="p-2">
+                            <DatabaseIcon size="15" className="mr-2"/>
+                            No Video Collection
+                        </Badge>
+                        <div className=" flex flex-col w-full space-y-4 max-w-2xl text-white mt-3">
+                            <h1 className="font-bold text-2xl">Record The Meet</h1>
+                            <p className="text-sm text-neutral-400">Harness the power of bot to record yout meet and view quality recordings and transcribe
+                                the recordings</p>
+
+                        </div>
+                        <div className="w-full mt-2 ">
+                            <MarqueeDemo/>
+                        </div>
+                    </div>
+
+                </div>
+            </Card>
+        </div>
+
+    )
 }
