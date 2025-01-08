@@ -42,6 +42,7 @@ const reviews = [
 
 const firstRow = reviews.slice(0, reviews.length / 2);
 
+
 const ReviewCard = ({
                         img,
                         name,
@@ -58,9 +59,9 @@ const ReviewCard = ({
             className={cn(
                 "relative w-64 cursor-pointer overflow-hidden rounded-xl border p-4",
                 // light styles
-                "border-gray-950/[.1] bg-gray-950/[.01] hover:bg-gray-950/[.05]",
+                "border-gray-950/[.1] dark:bg-none hover:bg-gray-950/[.05]",
                 // dark styles
-                "dark:border-gray-50/[.1] dark:bg-gray-50/[.10] dark:hover:bg-gray-50/[.15]",
+                "dark:border-gray-50/[.1] dark:bg-none dark:hover:bg-gray-50/[.15]",
             )}
         >
             <div className="flex flex-row items-center gap-2">
@@ -72,19 +73,20 @@ const ReviewCard = ({
                     <p className="text-xs font-medium dark:text-white/40">{username}</p>
                 </div>
             </div>
-            <blockquote className="mt-2 text-sm ">{body}</blockquote>
+            <blockquote className="mt-2 text-sm">{body}</blockquote>
         </figure>
     );
 };
 
 export function MarqueeDemo() {
     return (
-        <div className="relative flex h-[180px] w-full flex-col items-center justify-center overflow-hidden rounded-lg  md:shadow-xl">
-            <Marquee pauseOnHover className="absolute top-10 [--duration:20s]">
+        <div className="relative flex w-full flex-col items-center justify-center overflow-hidden rounded-lg  text-white bg-background bg-neutral-900  md:shadow-xl">
+            <Marquee pauseOnHover className="[--duration:20s] ">
                 {firstRow.map((review) => (
                     <ReviewCard key={review.username} {...review} />
                 ))}
             </Marquee>
+
 
         </div>
     );
