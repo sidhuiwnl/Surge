@@ -4,7 +4,7 @@ import {useUser} from "@clerk/clerk-react";
 import VideoCard from "@/components/VideoCard.tsx";
 import {RecordingsResponseType} from "@/types/RecordingsResponseType.ts";
 import {useCallback} from "react";
-
+import {Clapperboard} from "lucide-react";
 
 export default function Recordings(){
     const userData = useUser();
@@ -29,7 +29,7 @@ export default function Recordings(){
     return(
         <div className="p-7 flex flex-col gap-5">
             <div className="flex flex-row items-center gap-2">
-
+                <Clapperboard size="35"/>
                 <h1 className="font-bold text-4xl">Videos</h1>
             </div>
             <div className="flex flex-wrap gap-5">

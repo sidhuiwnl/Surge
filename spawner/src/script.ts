@@ -55,7 +55,6 @@ function webScript(){
                 recorder.ondataavailable = (event) => {
                     if (event.data.size > 0) {
                         signalingSocket.send(event.data);
-                        console.log("Sent chunk:", event.data);
                     }
                 }
                 recorder.onerror = (error) => {

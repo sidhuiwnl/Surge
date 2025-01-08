@@ -111,7 +111,7 @@ async function convertBufferToMP4(inputBuffer: Buffer): Promise<Buffer> {
             ])
             .on("end",async () =>{
                 console.log("end")
-                await handleRecordingEnd()
+
             })
             .on('error', (err) => {
                 console.error('FFmpeg error:', err);
@@ -217,11 +217,12 @@ async function handleRecordingEnd() {
             const videoFile = new File([videoBlob], "output.mp4", { type: "video/mp4" });
 
             const response = await utapi.uploadFiles([videoFile]);
-            if (response[0] && userId.values()) {
-                const id = JSON.stringify(userId.values());
+            if (response[0] && userId.values().next().value){
+                const id = userId.values().next().value;
                 console.log(id)
-                await addRecordings(response[0], id);
-
+                if(id){
+                    await addRecordings(response[0], id);
+                }
 
                 broadCastStatus("Recording completed");
             }

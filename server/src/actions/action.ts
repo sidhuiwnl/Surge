@@ -10,7 +10,8 @@ export default  async function addRecordings(videoData : UploadFileResult,userId
         return
     }
     try{
-        await prisma.recordings.create({
+        console.log("the userid that is passed",userId);
+        const response = await prisma.recordings.create({
             data : {
                 id : videoData?.data.key,
                 url : videoData.data.url,
@@ -18,6 +19,7 @@ export default  async function addRecordings(videoData : UploadFileResult,userId
                 createdAt : new Date(),
             }
         })
+        console.log(response)
         return{
             success : true,
             message : "Recordings added",
