@@ -29,12 +29,12 @@ export default function VideoCard({
         <div className="flex flex-wrap gap-3 ">
             {videoData && videoData.length > 0 ? videoData.map((video) => (
                 <Card key={video.id} className="w-[350px] h-[350px] bg-neutral-900 border-none">
-                    <CardHeader className="h-[200px]">
+                    <CardHeader className="h-[200px] shadow-sm ">
                         <Player url={video.url}/>
                     </CardHeader>
                     <CardContent className="space-y-2">
 
-                        <p className="text-neutral-400">You can now track all your user signups directly from the admin dashboard.</p>
+                        <p className="text-white text-sm">You can now track all your user signups directly from the admin dashboard.</p>
                         <div className="flex flex-row items-center gap-2 ">
                             <img
                                 src={video.user.image}

@@ -38,14 +38,14 @@ router.delete("/delete",async (req : Request,res : Response) =>{
             })
             return
         }
-
-        await utapi.deleteFiles([recordingKey]);
         const updatedRecordings = await prisma.recordings.delete({
                 where : {
                     id : recordingKey
                 }
             }
         )
+        await utapi.deleteFiles([recordingKey]);
+
         res.status(200).json({
             message : "Recording deleted",
             recordings : updatedRecordings
@@ -57,9 +57,9 @@ router.delete("/delete",async (req : Request,res : Response) =>{
     }
 
 
-
-
 })
+
+
 
 
 router.post("/recordings",async (req  : Request,res : Response) => {
@@ -112,6 +112,8 @@ router.get("/getuser",async (req: Request, res : Response) => {
     })
 
 })
+
+
 
 
 
