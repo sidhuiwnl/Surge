@@ -135,6 +135,12 @@ wss.on("connection", (socket,request) => {
     console.log("Client connected");
 
     const connectionType = url.searchParams.get("type");
+    const webscoketReceivedUserId = url.searchParams.get("userId");
+
+    if(webscoketReceivedUserId){
+        userId.add(webscoketReceivedUserId);
+    }
+
 
     console.log(userId);
     console.log(`New ${connectionType || 'unknown'} connection`);
@@ -171,6 +177,8 @@ function handleConnectionMedia(socket : ws  ){
     socket.on("close", async () => {
         mediaStreams.delete(socket);
         await handleRecordingEnd();
+        userId.clear()
+
 
     });
     socket.on("error", (error) => {
@@ -192,7 +200,6 @@ function handleClientConnectionStatus(socket : ws){
 
     socket.on("close", () => {
         clients.delete(socket);
-
     });
 
     socket.on("error", (error) => {
