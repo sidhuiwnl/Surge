@@ -32,8 +32,6 @@ app.use("/api/user",userRoute);
 
 
 
-
-
 const server = http.createServer(app);
 const wss = new ws.Server({server });
 const utapi = new UTApi();

@@ -10,7 +10,7 @@ const utapi = new UTApi();
 
 
 router.delete("/delete",async (req : Request,res : Response) =>{
-    const { userId, recordingKey } = req.body;
+    const { userId, recordingKey } = req.body.data;
 
     if(!userId || !recordingKey){
         res.status(400).json({
@@ -41,6 +41,9 @@ router.delete("/delete",async (req : Request,res : Response) =>{
         const updatedRecordings = await prisma.recordings.delete({
                 where : {
                     id : recordingKey
+                },
+                include : {
+                    user : true
                 }
             }
         )

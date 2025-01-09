@@ -6,13 +6,15 @@ import {
 import {RecordingsResponseType} from "@/types/RecordingsResponseType.ts";
 import VideoCardSkeleton from "@/components/Skeleton.tsx";
 import Player from "@/components/Player.tsx";
-
+import {DropdownMenuCheckboxes} from "@/components/DropDownPanel.tsx";
 import {NonVideoCard} from "@/components/MarqueeComp.tsx";
 
+
 export default function VideoCard({
-    videoData
-                                  } : {
-    videoData : RecordingsResponseType[] | null
+    videoData,
+     onDeleteVideo                                 } : {
+    videoData : RecordingsResponseType[] | null,
+    onDeleteVideo: ( videoId : string) => Promise<void>,
 }){
 
     if (videoData === null) {
@@ -28,9 +30,15 @@ export default function VideoCard({
     return(
         <div className="flex flex-wrap gap-3 ">
             {videoData && videoData.length > 0 ? videoData.map((video) => (
-                <Card key={video.id} className="w-[350px] h-[350px] bg-neutral-900 border-none">
-                    <CardHeader className="h-[200px] shadow-sm ">
+                <Card key={video.id} className="w-[350px] min-h-[350px] bg-neutral-900 border-none">
+                    <div className="mt-2 flex justify-end">
+                        <DropdownMenuCheckboxes
+
+                            deleteVideo={() => onDeleteVideo(video?.id)}  />
+                    </div>
+                    <CardHeader className="h-[200px]">
                         <Player url={video.url}/>
+
                     </CardHeader>
                     <CardContent className="space-y-2">
 
