@@ -1,7 +1,7 @@
 import axios from "axios";
 import {useEffect,useState} from "react";
 import {useUser} from "@clerk/clerk-react";
-import VideoCard from "@/components/VideoCard.tsx";
+import { VideoCard } from "@/components/VideoCard.tsx";
 import {RecordingsResponseType} from "@/types/RecordingsResponseType.ts";
 import {useCallback} from "react";
 import {Clapperboard} from "lucide-react";

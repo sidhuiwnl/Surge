@@ -43,8 +43,8 @@ export default function InputDemo() {
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectItem value="google">Google Meet</SelectItem>
-                                <SelectItem value="zoom">Zoom</SelectItem>
-                                <SelectItem value="teams">Microsoft Teams</SelectItem>
+                                <SelectItem value="zoom" disabled>Zoom</SelectItem>
+                                <SelectItem value="teams" disabled>Microsoft Teams</SelectItem>
                             </SelectContent>
                         </Select>
 
@@ -64,7 +64,7 @@ export default function InputDemo() {
                         </div>
                     </div>
                 </div>
-                <footer className="container mx-auto px-4 mt-8 text-center text-white/60">
+                <footer className="container mx-auto px-4 mt-10 text-center text-white/60">
                     <p>Paste your meeting link above to start recording</p>
                 </footer>
             </main>
