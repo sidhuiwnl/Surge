@@ -1,9 +1,9 @@
 import { Input } from "../components/ui/input.tsx";
-import { Label } from "../components/ui/label.tsx";
 import { useState, useCallback } from "react"
 import axios from "axios"
 import { toast } from "sonner"
-import SelectDemo from "@/components/Select.tsx";
+import { Button } from "@/components/ui/button"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select.tsx"
 import RecordingStatus from "@/components/RecordingStatus.tsx";
 
 export default function InputDemo() {
@@ -25,41 +25,50 @@ export default function InputDemo() {
     }, [link])
 
     return (
-        <div className="flex items-center justify-center px-4 mt-40">
-            <div className="space-y-6 w-full max-w-4xl">
-                <Label
-                    htmlFor="input-21"
-                    className="text-white text-4xl md:text-5xl lg:text-7xl font-bold text-center block"
-                >
-                    Add Meeting Link...
-                </Label>
-                <SelectDemo/>
-                <div className="flex rounded-lg shadow-sm shadow-black/5 w-full">
-
-                    <Input
-                        onChange={(e) => {
-                            e.preventDefault();
-                            setLink(e.target.value)
-                        }}
-                        value={link}
-                        id="input-21"
-                        className="-me-px  flex-1 py-3 rounded-e-none bg-black text-white placeholder:text-white focus:border-white border-neutral-800 shadow-none focus-visible:z-10"
-                        placeholder="Meet Link.."
-                        type="email"
-                    />
-                    <button
-                        onClick={sendLink}
-                        className=" inline-flex items-center rounded-e-lg border border-neutral-800 placeholder:text-white hover:bg-neutral-900 hover:text-white text-white bg-black border-input px-3 text-sm font-medium text-foreground outline-offset-2 transition-colors hover:bg-accent hover:text-foreground focus:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 disabled:cursor-not-allowed disabled:opacity-50"
-                    >
-                        Send
-                    </button>
+        <div className="text-white">
+            <main className="container mx-auto px-4 py-12 space-y-7">
+                <div className="mt-5 mb-20">
+                   <RecordingStatus/>
                 </div>
-                <div className="absolute bottom-5 right-1 flex justify-center">
-                    <RecordingStatus/>
+
+                <div className="max-w-2xl mx-auto space-y-8">
+                    <h1 className="text-4xl font-bold text-center mb-12">
+                        Add Meeting Link
+                    </h1>
+
+                    <div className="space-y-6">
+                        <Select defaultValue="google">
+                            <SelectTrigger className="w-full bg-white/5 border-white/10">
+                                <SelectValue placeholder="Select platform"/>
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="google">Google Meet</SelectItem>
+                                <SelectItem value="zoom">Zoom</SelectItem>
+                                <SelectItem value="teams">Microsoft Teams</SelectItem>
+                            </SelectContent>
+                        </Select>
+
+                        <div className="flex gap-3">
+                            <Input
+                                placeholder="Enter meeting link..."
+                                className="flex-1 bg-white/5 border-white/10 text-white"
+                                onChange={(e) => {
+                                    e.preventDefault()
+                                    setLink(e.target.value)}}
+                            />
+                            <Button
+                                onClick={sendLink}
+                            >
+                                Send
+                            </Button>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-
+                <footer className="container mx-auto px-4 mt-8 text-center text-white/60">
+                    <p>Paste your meeting link above to start recording</p>
+                </footer>
+            </main>
         </div>
+
     );
 }
