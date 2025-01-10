@@ -1,1 +1,1 @@
-{"root":["./src/index.ts","./src/actions/action.ts","./src/lib/prisma.ts","./src/lib/uploadthing.ts","./src/routes/user.ts","./src/routes/video.ts"],"version":"5.7.2"}
+{"root":["./src/index.ts","./src/actions/action.tsx","./src/lib/ffmpegutils.ts","./src/lib/prisma.ts","./src/lib/uploadthing.ts","./src/routes/user.ts","./src/routes/video.ts"],"version":"5.7.2"}

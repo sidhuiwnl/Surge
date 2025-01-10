@@ -9,6 +9,7 @@ import Recordings from "./pages/Recordings.tsx";
 import {Toaster} from "@/components/ui/sonner.tsx";
 import Layout from "@/components/Layout.tsx";
 import ProtectedRoute from "@/components/ProtectedRoute.tsx";
+import RecordingPage from "@/pages/Recording.tsx";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -43,6 +44,17 @@ createRoot(document.getElementById('root')!).render(
 
                           }
                       />
+                  <Route
+                      path="/recordings/:id"
+                      element={
+                          <ProtectedRoute>
+                              <RecordingPage />
+                          </ProtectedRoute>
+
+                      }
+                  />
+
+
 
               </Routes>
               </Layout>

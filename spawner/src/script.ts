@@ -34,7 +34,6 @@ function webScript(){
         audioElStream3.connect(dest)
 
 
-        // Combine screen and audio streams
         const combinedStream = new MediaStream([
             ...screenStream.getVideoTracks(),
             ...dest.stream.getAudioTracks()

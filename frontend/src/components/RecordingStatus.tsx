@@ -88,8 +88,8 @@ export default function RecordingStatus() {
     },[isLoaded,isSignedIn,user?.id])
     return (
         <div className="rounded-lg flex justify-center border-2 border-neutral-700 p-3 bg-white">
-            <h1 className="text-sm font-medium text-neutral-800">Recording Status :</h1>
-            <div className="flex  items-center gap-2">
+            <h1 className="text-sm font-medium text-neutral-800">Recording Status : </h1>
+            <div className="flex  items-center gap-2 ml-1">
                 {connectionStatus === "connecting" && (
                     <div className="h-4 w-4 animate-spin text-blue-500"/>
                 )}
@@ -98,10 +98,8 @@ export default function RecordingStatus() {
                         connectionStatus === "disconnected" ? "text-yellow-500" :
                             connectionStatus === "error" ? "text-red-500" : "text-blue-500"
                 }`}>
-            {connectionStatus}
-            <div>
-                {recordingStatus?.status}
-            </div>
+            {connectionStatus} ({ recordingStatus?.status ?  recordingStatus?.status : "Not Ready"})
+
           </span>
             </div>
         </div>
