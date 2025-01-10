@@ -9,16 +9,16 @@ export  default function RecordingPage(){
 
 
     return(
-        <div className="flex flex-col p-4 space-y-6">
+        <div className="flex flex-col p-4 space-y-3">
             <div>
                 <h1 className="text-2xl font-bold antialiased">This is the title for the recording</h1>
                 <p className="text-sm mt-3">{videoDetail.user.firstName} {videoDetail.user.lastName}  <span className="text-xs text-gray-400">{formatDistanceToNow(new Date(videoDetail.createdAt), {addSuffix: true})}</span></p>
-
             </div>
-            <div className="w-[1000px] h-[800px]">
+            <div className="flex flex-col w-[1000px] space-y-3">
                 <Player url={videoDetail.url}/>
+                <h1>Description</h1>
+                <span className="text-sm mt-5 text-neutral-600">{videoDetail.description}</span>
             </div>
-
         </div>
     )
 }

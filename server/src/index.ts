@@ -10,6 +10,7 @@ import ffmpeg from 'fluent-ffmpeg';
 import * as stream from "node:stream";
 import userRoute from "./routes/user"
 import addRecordings from "./actions/action";
+import {transcribeAudios} from "./lib/ffmpegutils";
 
 
 dotenv.config();
@@ -221,13 +222,14 @@ async function handleRecordingEnd() {
             const mp4Buffer = await convertBufferToMP4(videoBuffer);
             const videoBlob = new Blob([mp4Buffer], { type: "video/mp4" });
             const videoFile = new File([videoBlob], "output.mp4", { type: "video/mp4" });
-
+            const description = await transcribeAudios(videoBuffer)
             const response = await utapi.uploadFiles([videoFile]);
-            if (response[0] && userId.values().next().value){
+
+            if (response[0] && userId.values().next().value && description){
                 const id = userId.values().next().value;
                 console.log(id)
                 if(id){
-                    await addRecordings(response[0], id);
+                    await addRecordings(response[0], id,description);
                 }
 
                 broadCastStatus("Recording completed");
