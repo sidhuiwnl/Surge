@@ -5,8 +5,8 @@ import {GoogleGenerativeAI} from "@google/generative-ai";
 import {GoogleAIFileManager,FileState} from "@google/generative-ai/server";
 
 
-const fileManager = new GoogleAIFileManager("AIzaSyCrUbvn_ApodELl9h2en9NIVggXMRRbHGU");
-const genAI = new GoogleGenerativeAI("AIzaSyCrUbvn_ApodELl9h2en9NIVggXMRRbHGU");
+const fileManager = new GoogleAIFileManager(process.env.GOOGLE_API_KEY as string);
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY as string);
 
 const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
 
