@@ -49,7 +49,7 @@ export default function Navbar() {
     }, [user]);
 
     return (
-        <div className="flex items-center justify-around py-5 border-b border-b-neutral-600">
+        <div className="flex flex-row justify-around  mx:auto py-5 border-b border-b-neutral-600">
             <NavLink to={"/"} className="text-sm underline">
                 Surge
             </NavLink>
