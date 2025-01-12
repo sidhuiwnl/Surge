@@ -29,7 +29,8 @@ async function getBrowser(){
             "--no-sandbox",
             "--disable-setuid-sandbox",
             "--single-process",
-            "--no-zygote"
+            "--no-zygote",
+            '--disable-dev-shm-usage'
         ]
     })
 
