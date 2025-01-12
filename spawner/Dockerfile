@@ -10,7 +10,7 @@ COPY package*.json ./
 
 COPY . .
 
-RUN mkdir -p /user/src/app/cache && chmod -R 777 /user/src/app
+
 
 CMD ["npm","run","dev"]
 
