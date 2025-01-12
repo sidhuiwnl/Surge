@@ -16,7 +16,7 @@ async function getBrowser(){
     const audioPath = path.resolve(__dirname,"../silent-audio.mp3");
 
     const browser = await puppeteer.launch({
-        executablePath : process.env.NODE_ENV === "production" ? process.env.PUPPETEER_EXECUTABLE_PATH : puppeteer.executablePath(),
+        // executablePath : process.env.NODE_ENV === "production" ? process.env.PUPPETEER_EXECUTABLE_PATH : puppeteer.executablePath(),
         headless: false,
         args : [
             "--disable-blink-features=AutomationControlled",
