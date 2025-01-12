@@ -99,20 +99,40 @@ router.get("/getuser",async (req: Request, res : Response) => {
     console.log(id)
     if(!id){
         res.status(400).json({
+            status  : false,
             message : "Unauthorised user with id "
         })
+        return
+    }
+
+    try {
+        const userExists = await prisma.user.findUnique({
+            where: {
+                id: id as string, // Ensure type alignment with Prisma schema
+            },
+        });
+
+        if (!userExists) {
+            res.status(404).json({
+                status: false,
+                exists: false, // Explicitly returning `exists: false`
+                message: "No user found",
+            });
+            return;
+        }
+
+        res.status(200).json({
+            status: true,
+            exists: true,
+        });
+    }catch (error){
+        res.status(500).json({
+            status: false,
+            message: "Internal server error",
+        });
     }
 
 
-    const userExists = await prisma.user.findUnique({
-        where : {
-            id : JSON.stringify(id)
-        }
-    })
-
-    res.status(200).json({
-        exists : !!userExists
-    })
 
 })
 
@@ -121,13 +141,11 @@ router.get("/getuser",async (req: Request, res : Response) => {
 
 
 router.post("/addUser",async (req : Request,res : Response ) =>{
-
     const userData = req.body;
-
-
 
     if(!userData.id){
         res.status(400).json({
+            status : false,
             message : "Unauthorised"
         })
         return
@@ -142,6 +160,7 @@ router.post("/addUser",async (req : Request,res : Response ) =>{
         })
         if(existingUser){
             res.status(400).json({
+                status : false,
                 message : "User already exists"
             })
             return
@@ -161,10 +180,12 @@ router.post("/addUser",async (req : Request,res : Response ) =>{
         userId.add(userData.id)
 
         res.status(200).json({
+            status : true,
             message : "User created"
         })
     }catch (error){
         res.status(500).json({
+            status : false,
             message : "Internal server error"
         })
     }

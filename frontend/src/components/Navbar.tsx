@@ -1,5 +1,4 @@
 
-
 import {NavLink} from "react-router";
 import {SignedIn, SignedOut, SignUpButton, UserButton} from "@clerk/clerk-react";
 import {useUser} from "@clerk/clerk-react";
@@ -22,7 +21,9 @@ export default function Navbar() {
         try {
             if (user) {
                 const response = await axios.post(`${import.meta.env.VITE_WEBSOCKET_BASE_URL}/api/user/addUser`, userDetails);
-                console.log(response);
+                if(response.status === 400) {
+                    return
+                }
             }
         }catch (error) {
             console.error("Error adding user:", error );
@@ -31,17 +32,16 @@ export default function Navbar() {
 
     async function checkUser(){
         if(user && user.id){
-            console.log(user.id);
-            await axios
-                .get(`${import.meta.env.VITE_WEBSOCKET_BASE_URL}/api/user/getuser?id=${user.id}`)
-                .then((response) => {
-                    if(!response.data.exists){
-                        addUser()
-                    }
-                })
-                .catch((error) => {
-                    console.error("Error checking user:", error.response?.data || error.message);
-                })
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_WEBSOCKET_BASE_URL}/api/user/getuser?id=${user.id}`);
+
+                if(response.status === 200 && !response.data.exists){
+                    await addUser();
+                }
+            }catch (error) {
+              console.error("Error adding user:", error);
+            }
+
         }
     }
     useEffect(() => {
