@@ -13,7 +13,7 @@ interface RecordingStatus {
 
 type ConnectionStatus = "connecting" | "connected" | "disconnected" | "error";
 
-const WEBSOCKET_URL = "ws://127.0.0.1:8080";
+
 const RECONNECT_DELAY = 5000;
 
 
@@ -33,7 +33,7 @@ export default function RecordingStatus() {
         }
 
         try{
-            const ws = new WebSocket(`${WEBSOCKET_URL}?type=status&userId=${user?.id}`);
+            const ws = new WebSocket(`${import.meta.env.VITE_WEBSOCKET_URL}?type=status&userId=${user?.id}`);
             socketRef.current = ws;
 
             ws.onopen = () =>{
