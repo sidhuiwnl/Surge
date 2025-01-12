@@ -3,6 +3,9 @@ import * as path from "node:path";
 import * as fs from "node:fs";
 import express, { Request,Response } from "express";
 import cors from "cors";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 app.use(express.json());
@@ -13,7 +16,7 @@ async function getBrowser(){
     const audioPath = path.resolve(__dirname,"../silent-audio.mp3");
 
     const browser = await puppeteer.launch({
-        // executablePath : "/usr/bin/google-chrome-stable",
+        executablePath : process.env.NODE_ENV === "production" ? process.env.PUPPETEER_EXECUTABLE_PATH : puppeteer.executablePath(),
         headless: false,
         args : [
             "--disable-blink-features=AutomationControlled",
@@ -22,7 +25,11 @@ async function getBrowser(){
             "--mute-audio",
             `--use-file-for-fake-audio-capture=${audioPath}`,
             "--window-position=-32000,-32000",
-            "--start-minimized"
+            "--start-minimized",
+            "--no-sandbox",
+            "--disable-setuid-sandbox",
+            "--single-process",
+            "--no-zygote"
         ]
     })
 

@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsc -b && node dist/index.js",
-    "build" : "npm run build"
+    "build": "npm run build"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +15,7 @@
     "@types/express": "^5.0.0",
     "@types/selenium-webdriver": "^4.1.27",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "puppeteer": "^23.11.1",
     "puppeteer-core": "^23.11.1",
