@@ -10,6 +10,8 @@ interface User{
 
 export interface RecordingsResponseType{
     createdAt : Date,
+    title : string,
+    description : string,
     id  : string,
     url : string,
     user : User

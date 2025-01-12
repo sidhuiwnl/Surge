@@ -4,12 +4,13 @@ import {
     CardContent,
 } from "@/components/ui/card";
 import { RecordingsResponseType } from "@/types/RecordingsResponseType";
-import VideoCardSkeleton from "@/components/Skeleton";
 import Player from "@/components/Player";
 import { DropdownMenuCheckboxes } from "@/components/DropDownPanel";
-import { NonVideoCard } from "@/components/MarqueeComp";
+
 import { formatDistanceToNow } from "date-fns"
 import {NavLink} from "react-router";
+import {LoaderCircle} from "lucide-react";
+
 export function VideoCard({
                               videoData,
                               onDeleteVideo
@@ -18,11 +19,19 @@ export function VideoCard({
     onDeleteVideo: (videoId: string) => Promise<void>;
 }) {
     if (videoData === null) {
-        return <VideoCardSkeleton />;
+        return (
+            <div className="container mx-auto flex items-center justify-center py-32 h-full w-full overflow-hidden">
+                <LoaderCircle className="animate-spin w-8 h-8 text-neutral-500" />
+            </div>
+        );
     }
 
     if (videoData.length === 0) {
-        return <NonVideoCard />;
+        return (
+            <div className="container mx-auto flex items-center justify-center py-32 h-full w-full overflow-hidden">
+                <LoaderCircle className="animate-spin w-8 h-8 text-neutral-500" />
+            </div>
+        );
     }
 
     return (
@@ -53,7 +62,7 @@ export function VideoCard({
                     >
                         <CardContent className="p-4 space-y-4">
                             <p className="text-neutral-100 text-sm font-medium line-clamp-2 hover:line-clamp-none transition-all">
-                                You can now track all your user signups directly from the admin dashboard.
+                                {video.description}
                             </p>
 
                             <div className="flex items-center gap-3">

@@ -137,7 +137,8 @@ wss.on("connection", (socket,request) => {
     const connectionType = url.searchParams.get("type");
     const webscoketReceivedUserId = url.searchParams.get("userId");
 
-    if(webscoketReceivedUserId){
+    if(webscoketReceivedUserId ){
+        userId.clear()
         userId.add(webscoketReceivedUserId);
     }
 
@@ -222,14 +223,16 @@ async function handleRecordingEnd() {
             const mp4Buffer = await convertBufferToMP4(videoBuffer);
             const videoBlob = new Blob([mp4Buffer], { type: "video/mp4" });
             const videoFile = new File([videoBlob], "output.mp4", { type: "video/mp4" });
-            const description = await transcribeAudios(videoBuffer)
+
+            const metadata = await transcribeAudios(videoBuffer)
+
             const response = await utapi.uploadFiles([videoFile]);
 
-            if (response[0] && userId.values().next().value && description){
+            if (response[0] && userId.values().next().value && metadata){
                 const id = userId.values().next().value;
                 console.log(id)
                 if(id){
-                    await addRecordings(response[0], id,description);
+                    await addRecordings(response[0], id,metadata.title,metadata.description);
                 }
 
                 broadCastStatus("Recording completed");

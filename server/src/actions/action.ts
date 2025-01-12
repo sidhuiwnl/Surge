@@ -1,7 +1,7 @@
 import { UploadFileResult } from "uploadthing/types";
 import {prisma} from "../lib/prisma";
 
-export default  async function addRecordings(videoData : UploadFileResult,userId : string | null,description : string){
+export default  async function addRecordings(videoData : UploadFileResult,userId : string | null,title : string,description : string){
     if(!videoData.data ){
         return
     }
@@ -18,7 +18,7 @@ export default  async function addRecordings(videoData : UploadFileResult,userId
                 userId : userId,
                 createdAt : new Date(),
                 description : description,
-                title : "Testing Recording",
+                title : title,
             }
         })
         console.log(response)

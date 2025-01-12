@@ -12,7 +12,6 @@ export default function Player({
     return (
         <div className="w-full h-full">
             <MediaPlayer
-                title="Sprite Fights"
                 src={url}
                 crossOrigin
                 viewType='video'

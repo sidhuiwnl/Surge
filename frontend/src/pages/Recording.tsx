@@ -11,7 +11,7 @@ export  default function RecordingPage(){
     return(
         <div className="flex flex-col p-4 space-y-3">
             <div>
-                <h1 className="text-2xl font-bold antialiased">This is the title for the recording</h1>
+                <h1 className="text-2xl font-bold antialiased">{videoDetail.title}</h1>
                 <p className="text-sm mt-3">{videoDetail.user.firstName} {videoDetail.user.lastName}  <span className="text-xs text-gray-400">{formatDistanceToNow(new Date(videoDetail.createdAt), {addSuffix: true})}</span></p>
             </div>
             <div className="flex flex-col w-[1000px] space-y-3">

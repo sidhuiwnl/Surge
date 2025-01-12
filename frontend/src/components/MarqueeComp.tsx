@@ -103,7 +103,7 @@ export function NonVideoCard(){
                     <div className="p-4">
                         <Badge className="p-2">
                             <DatabaseIcon size="15" className="mr-2"/>
-                            No Video Collection
+                            Video Collection
                         </Badge>
                         <div className=" flex flex-col w-full space-y-4 max-w-2xl text-white mt-3">
                             <h1 className="font-bold text-2xl">Record The Meet</h1>

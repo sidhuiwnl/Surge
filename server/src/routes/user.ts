@@ -121,8 +121,11 @@ router.get("/getuser",async (req: Request, res : Response) => {
 
 
 router.post("/addUser",async (req : Request,res : Response ) =>{
+
     const userData = req.body;
-    userId.add(userData.id);
+
+
+
     if(!userData.id){
         res.status(400).json({
             message : "Unauthorised"
@@ -138,11 +141,8 @@ router.post("/addUser",async (req : Request,res : Response ) =>{
             }
         })
         if(existingUser){
-
             res.status(400).json({
                 message : "User already exists"
-
-
             })
             return
         }
@@ -157,6 +157,8 @@ router.post("/addUser",async (req : Request,res : Response ) =>{
                 image : userData.image
             }
         })
+        userId.clear()
+        userId.add(userData.id)
 
         res.status(200).json({
             message : "User created"

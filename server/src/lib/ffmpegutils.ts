@@ -10,23 +10,25 @@ const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY as string);
 
 const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
 
-const prompt = "Tell me about this audio clip.";
+const prompt1 = "Tell me about this audio clip.";
+
+const prompt2  = "Generate a single title which explains entire of the audio clip.";
 
 
-
-export async function transcribeAudios( videoBuffer : Buffer){
+export async function transcribeAudios( videoBuffer : Buffer) {
     try{
         const tempVideoPath  = path.join(__dirname,"temp_video.mp4");
         const tempAudioPath  = path.join(__dirname,"temp_audio.wav");
 
          await fs.writeFile(tempVideoPath,videoBuffer);
          await extractAudios(tempVideoPath, tempAudioPath);
-         const description = await transcribeAudio(tempAudioPath);
-         return description;
-
-
+         const { title, description } = await transcribeAudio(tempAudioPath);
+         return {
+             title,
+             description,
+         };
     }catch(err){
-
+        console.log("Cannot able to transcribe audio files.",err);
     }
 }
 
@@ -68,16 +70,30 @@ async function transcribeAudio(audioPath : string){
             `Uploaded file ${uploadResult.file.displayName} as: ${uploadResult.file.uri}`,
         );
 
-        const result = await model.generateContent([
-            prompt,
+        const resultFOrDescription = await model.generateContent([
+            prompt1,
             {
+                fileData : {
+                    fileUri: uploadResult.file.uri,
+                    mimeType: uploadResult.file.mimeType,
+                }
+            },
+        ])
+        const resultFotTitle = await model.generateContent([
+            prompt2,{
                 fileData : {
                     fileUri: uploadResult.file.uri,
                     mimeType: uploadResult.file.mimeType,
                 }
             }
         ])
-        return result.response.text();
+        const description = resultFOrDescription.response.text();
+        const title = resultFotTitle.response.text();
+
+        return {
+            title: title,
+            description: description,
+        };
     }catch(err){
         console.error('Error transcribing audio:', err);
         throw err;
