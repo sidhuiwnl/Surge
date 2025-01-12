@@ -5,13 +5,17 @@ ENV PUPPETEER_SKIP_DOWNLOAD=true \
 
 WORKDIR /user/src/app
 
-COPY package*.json ./
+# Create cache directory and set permissions early
+RUN mkdir -p /user/src/app/cache && \
+    chown -R node:node /user/src/app
+
+# Switch to non-root user
+USER node
+
+COPY --chown=node:node package*.json ./
 
 RUN npm ci
 
-COPY . .
-
-RUN mkdir -p /user/src/app/cache && chmod -R 777 /user/src/app
+COPY --chown=node:node . .
 
 CMD ["npm","run","dev"]
-
