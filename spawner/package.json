@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "tsc -b && node dist/index.js",
+    "build" : "tsc -b",
+    "dev": "node dist/index.js",
     "postinstall": "npx puppeteer browsers install chrome"
   },
   "keywords": [],
