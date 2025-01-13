@@ -2,10 +2,11 @@ FROM ghcr.io/puppeteer/puppeteer:23.11.1
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-
+# Skip downloading Chromium since we're installing Chrome manually
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
-    PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable
+    PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome
 
+# Install necessary dependencies and Google Chrome
 RUN apt-get update && apt-get install -y \
     curl \
     gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 \
@@ -17,28 +18,28 @@ RUN apt-get update && apt-get install -y \
     lsb-release xdg-utils wget x11vnc x11-xkb-utils xfonts-100dpi \
     xfonts-75dpi xfonts-scalable xfonts-cyrillic x11-apps \
     libxss1 libgbm1 libdrm2 xvfb && \
-    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
-    apt-get install -y nodejs && \
+    wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+    apt-get install -y ./google-chrome-stable_current_amd64.deb && \
+    rm google-chrome-stable_current_amd64.deb && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
-
 
 WORKDIR /app
 
-
+# Copy dependencies and install them
 COPY package*.json ./
 RUN npm install
 
-
+# Copy application source code
 COPY . .
 
-
+# Build the application
 RUN npm run build
 
-
+# Expose the application port
 EXPOSE 3000
 
-
+# Set up virtual display
 ENV DISPLAY=:99
 
-
+# Start Xvfb and run the application
 CMD ["sh", "-c", "Xvfb :99 -screen 0 1920x1080x24 & npm run dev"]
