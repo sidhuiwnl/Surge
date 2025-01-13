@@ -11,6 +11,7 @@ export default function InputDemo() {
 
     const sendLink = useCallback(async () => {
         try {
+            setLink("");
             const response = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/getMeetId`, {
                 link: link,
             })
@@ -54,6 +55,7 @@ export default function InputDemo() {
                                 className="flex-1 bg-white/5 border-white/10 text-white"
                                 onChange={(e) => {
                                     e.preventDefault()
+
                                     setLink(e.target.value)}}
                             />
                             <Button
