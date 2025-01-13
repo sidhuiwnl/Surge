@@ -1,7 +1,10 @@
-FROM ubuntu:20.04
+FROM ghcr.io/puppeteer/puppeteer:23.11.1
 
 ENV DEBIAN_FRONTEND=noninteractive
 
+
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
+    PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable
 
 RUN apt-get update && apt-get install -y \
     curl \
