@@ -18,7 +18,7 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(cors({
-    origin : "https://surge-pi.vercel.app"
+    origin : "https://luxury-pastelito-c44e24.netlify.app"
     }
 ));
 
