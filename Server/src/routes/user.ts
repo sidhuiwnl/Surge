@@ -55,7 +55,7 @@ router.delete("/delete",async (req : Request,res : Response) =>{
         })
     }catch (error){
         res.status(500).json({
-            message : "Internal server error"
+            message : "Internal Server error"
         })
     }
 
@@ -89,7 +89,7 @@ router.post("/recordings",async (req  : Request,res : Response) => {
         })
     }catch (error) {
         res.status(500).json({
-            message : "Internal server error"
+            message : "Internal Server error"
         })
     }
 })
@@ -128,7 +128,7 @@ router.get("/getuser",async (req: Request, res : Response) => {
     }catch (error){
         res.status(500).json({
             status: false,
-            message: "Internal server error",
+            message: "Internal Server error",
         });
     }
 
@@ -186,7 +186,7 @@ router.post("/addUser",async (req : Request,res : Response ) =>{
     }catch (error){
         res.status(500).json({
             status : false,
-            message : "Internal server error"
+            message : "Internal Server error"
         })
     }
 
