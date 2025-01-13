@@ -28,8 +28,6 @@ async function getBrowser(){
             "--start-minimized",
             "--no-sandbox",
             "--disable-setuid-sandbox",
-            "--single-process",
-            "--no-zygote",
             '--disable-dev-shm-usage'
         ]
     })
@@ -47,7 +45,9 @@ async function getMeet(url : string){
     let browser;
     let page;
 
-    const webscriptCode = fs.readFileSync("../spawner/dist/script.js","utf-8")
+    const scriptPath = path.resolve(__dirname,"../dist/script.js")
+    const scriptCode = fs.readFileSync(scriptPath,"utf-8")
+    // const webscriptCode = fs.readFileSync("../spawner/dist/script.js","utf-8")
     const browserInstance = await getBrowser();
     browser = browserInstance.browser;
     page = browserInstance.page;
@@ -67,7 +67,7 @@ async function getMeet(url : string){
     try {
         await page.waitForSelector(elementSelector, { timeout: 10000, visible: true });
         console.log("Element found!");
-        await page.evaluate(`${webscriptCode}webScript();`);
+        await page.evaluate(`${scriptCode}webScript();`);
 
 
         await page.evaluate(() => {
@@ -123,7 +123,7 @@ app.post("/getMeetId",(req : Request,res : Response) =>{
 
 
 // getMeet("https://meet.google.com/nhx-tapc-opw");
-
+//
 
 app.listen(3000, () => {
     console.log("Server is running on port 3000");
