@@ -7,12 +7,19 @@ RUN apk add --no-cache openssl curl bash
 
 COPY package*.json ./
 
-COPY . .
+
 
 RUN npm install
 
+COPY prisma ./prisma
+
 RUN npx prisma generate
 
+COPY . .
 
-CMD npm run dev
+EXPOSE 8080
+
+ENV DATABASE_URL="postgresql://default:password@localhost/db"
+
+CMD ["npm", "run", "dev"]
 
