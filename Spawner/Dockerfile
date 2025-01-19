@@ -38,4 +38,5 @@ EXPOSE 3000
 ENV DISPLAY=:99
 
 
-CMD ["sh", "-c", "Xvfb :99 -screen 0 1920x1080x24 & npm run dev"]
+CMD ["sh", "-c", "rm -f /tmp/.X99-lock && Xvfb :99 -screen 0 1920x1080x24 & npm run dev"]
+

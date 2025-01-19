@@ -24,7 +24,7 @@ async function getBrowser(){
 
     const browser = await puppeteer.launch({
         executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
-        headless: false,
+        headless: true,
         args : [
             "--disable-blink-features=AutomationControlled",
             "--auto-select-desktop-capture-source",
