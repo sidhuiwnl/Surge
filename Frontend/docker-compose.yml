@@ -3,42 +3,32 @@ services:
     build:
       context: .
     ports:
-      - "5173:5173"
+      - "${PORT:-5173}:5173"
     depends_on:
       - server
       - spawner
     environment:
-      - VITE_CLERK_PUBLISHABLE_KEY=pk_test_d29ya2luZy1kaW5vc2F1ci0yNS5jbGVyay5hY2NvdW50cy5kZXYk
-      - VITE_BACKEND_BASE_URL=http://localhost:3000
-      - VITE_WEBSOCKET_BASE_URL=http://localhost:8080
-      - VITE_WEBSOCKET_URL=ws://localhost:8080
-      - VITE_GOOGLE_API_KEY=AIzaSyCrUbvn_ApodELl9h2en9NIVggXMRRbHGU
-    networks:
-      - app-network
+      - VITE_CLERK_PUBLISHABLE_KEY=${CLERK_PUBLISHABLE_KEY}
+      - VITE_BACKEND_BASE_URL=${BACKEND_URL}
+      - VITE_WEBSOCKET_BASE_URL=${WEBSOCKET_URL}
+      - VITE_WEBSOCKET_URL=${WS_URL}
+      - VITE_GOOGLE_API_KEY=${GOOGLE_API_KEY}
 
   server:
     build:
       context: ../server
     ports:
-      - "8080:8080"
+      - "${SERVER_PORT:-8080}:8080"
     environment:
-      - DATABASE_URL=postgresql://neondb_owner:zxHWeaJ8g2Ay@ep-white-flower-a5oc4ckc.us-east-2.aws.neon.tech/neondb?sslmode=require
-      - UPLOADTHING_TOKEN=eyJhcGlLZXkiOiJza19saXZlX2EzMmMyZmQ3YWMzZjQ0MTc2N2U5MWU2OTgyNDkwNTZkMWM3YzI4YjE5MjJkODg5YmY3ODhmM2M4MjQxZDVhMjMiLCJhcHBJZCI6InlkaDZmM3JvMXEiLCJyZWdpb25zIjpbInNlYTEiXX0=
-      - CLERK_PUBLISHABLE_KEY=pk_test_d29ya2luZy1kaW5vc2F1ci0yNS5jbGVyay5hY2NvdW50cy5kZXYk
-      - CLERK_SECRET_KEY=sk_test_InQTvjpRBe7WyF1yONLpEMdjq5SBgEwon6j6xnHe2V
-      - GOOGLE_API_KEY=AIzaSyCrUbvn_ApodELl9h2en9NIVggXMRRbHGU
+      - DATABASE_URL=${DATABASE_URL}
+      - UPLOADTHING_TOKEN=${UPLOADTHING_TOKEN}
+      - CLERK_PUBLISHABLE_KEY=${CLERK_PUBLISHABLE_KEY}
+      - CLERK_SECRET_KEY=${CLERK_SECRET_KEY}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
     command: "npm run dev"
-    networks:
-      - app-network
 
   spawner:
     build:
       context: ../spawner
     ports:
-      - "3000:3000"
-    networks:
-      - app-network
-
-networks:
-  app-network:
-    driver: bridge
+      - "${SPAWNER_PORT:-3000}:3000"

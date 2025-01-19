@@ -17,10 +17,7 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
-app.use(cors({
-    origin : "https://luxury-pastelito-c44e24.netlify.app"
-    }
-));
+app.use(cors());
 
 app.use(
     "/api/uploadthing",
