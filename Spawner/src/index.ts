@@ -57,7 +57,7 @@ async function getMeet(url : string){
 
     const scriptPath = path.resolve(__dirname,"../dist/script.js")
     const scriptCode = fs.readFileSync(scriptPath,"utf-8")
-    // const webscriptCode = fs.readFileSync("../Spawner/dist/script.js","utf-8")
+
     const browserInstance = await getBrowser();
     browser = browserInstance.browser;
     page = browserInstance.page;
@@ -99,10 +99,12 @@ async function getMeet(url : string){
     } catch (error) {
         console.log("Element not found within timeout. Skipping script execution.");
         await browser.close();
+        await page.close();
     }finally {
        if(browser){
            try {
                await browser.close();
+               await page.close();
            }catch (error) {
                console.error("Error closing browser:", error);
            }
