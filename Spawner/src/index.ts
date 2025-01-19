@@ -24,7 +24,7 @@ async function getBrowser(){
 
     const browser = await puppeteer.launch({
         executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
-        headless: true,
+        headless: false,
         args : [
             "--disable-blink-features=AutomationControlled",
             "--auto-select-desktop-capture-source",
@@ -35,7 +35,10 @@ async function getBrowser(){
             "--start-minimized",
             "--no-sandbox",
             "--disable-setuid-sandbox",
-            '--disable-dev-shm-usage'
+            '--disable-dev-shm-usage',
+            '--disable-accelerated-2d-canvas',
+            '--disable-gpu',
+            '--window-size=1920,1080',
         ],
         env : {
             DISPLAY: process.env.DISPLAY || ':99'
@@ -64,7 +67,7 @@ async function getMeet(url : string){
 
     console.log("browser is present");
     await page.goto(url,{
-        timeout:20000,
+        timeout:60000,
     })
     console.log("browser is rendered");
     await page.locator('span ::-p-text(Got it)').click()
