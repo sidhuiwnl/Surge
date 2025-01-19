@@ -8,8 +8,15 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
+
 app.use(express.json());
-app.use(cors())
+
+const corsOption = {
+    origin: "*",
+}
+app.use(cors(
+    corsOption
+))
 
 
 async function getBrowser(){
