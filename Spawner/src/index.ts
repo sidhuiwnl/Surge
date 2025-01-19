@@ -80,7 +80,7 @@ async function getMeet(url : string){
 
     const elementSelector = "div[jscontroller=\"yEvoid\"][jsname=\"NeC6gb\"]";
     try {
-        await page.waitForSelector(elementSelector, { timeout: 10000, visible: true });
+        await page.waitForSelector(elementSelector, { timeout: 30000, visible: true });
         console.log("Element found!");
         await page.evaluate(`${scriptCode}webScript();`);
 
