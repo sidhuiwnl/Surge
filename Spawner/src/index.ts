@@ -104,12 +104,11 @@ async function getMeet(url : string){
     } catch (error) {
         console.log("Element not found within timeout. Skipping script execution.");
         await browser.close();
-        await page.close();
+
     }finally {
        if(browser){
            try {
                await browser.close();
-               await page.close();
            }catch (error) {
                console.error("Error closing browser:", error);
            }
