@@ -10,7 +10,7 @@ export default function InputDemo() {
     const [link, setLink] = useState("");
 
     const sendLink = useCallback(async () => {
-        setLink("");
+        setLink(" ")
         try {
 
             const response = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/getMeetId`, {
@@ -19,7 +19,7 @@ export default function InputDemo() {
             toast.success(response.data.message, {
                 description: "Meeting Link Sent"
             });
-            setLink("")
+
         } catch (error) {
             console.error("Error:", error);
             toast.error("Failed to send meeting link");

@@ -44,7 +44,7 @@ function webScript(){
         let MAX_RETRY_COUNT = 3;
 
         function sendStreamDirectly(stream : MediaStream) {
-            const signalingSocket = new WebSocket("https://surge-docker.onrender.com?type=media");
+            const signalingSocket = new WebSocket("wss://surge-docker.onrender.com?type=media");
             const recorder = new MediaRecorder(stream, {mimeType: 'video/webm'});
 
 
