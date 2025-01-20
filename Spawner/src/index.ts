@@ -67,7 +67,7 @@ async function getMeet(url : string){
 
     console.log("browser is present");
     await page.goto(url,{
-        timeout:10000,
+        timeout:60000,
     })
     console.log("browser is rendered");
     await page.locator('span ::-p-text(Got it)').click()
