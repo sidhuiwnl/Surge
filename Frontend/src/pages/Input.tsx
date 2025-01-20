@@ -10,8 +10,9 @@ export default function InputDemo() {
     const [link, setLink] = useState("");
 
     const sendLink = useCallback(async () => {
+        setLink("");
         try {
-            setLink("");
+
             const response = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/getMeetId`, {
                 link: link,
             })
