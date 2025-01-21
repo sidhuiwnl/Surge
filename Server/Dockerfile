@@ -1,10 +1,16 @@
-FROM node:20-alpine
+FROM node:20-bullseye
 
 
 WORKDIR /server
 
 
-RUN apk add --no-cache openssl curl bash ffmpeg
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ffmpeg \
+    openssl \
+    curl \
+    bash \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 
 COPY package*.json ./
