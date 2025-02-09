@@ -33,7 +33,7 @@ export default function RecordingStatus() {
         }
 
         try{
-            const ws = new WebSocket(`${import.meta.env.VITE_WEBSOCKET_URL}?type=status&userId=${user?.id}`);
+            const ws = new WebSocket(`${import.meta.env.VITE_SERVER_WEBSOCKET_URL}?type=status&userId=${user?.id}`);
             socketRef.current = ws;
 
             ws.onopen = () =>{

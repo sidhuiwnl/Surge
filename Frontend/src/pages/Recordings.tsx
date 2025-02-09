@@ -14,7 +14,7 @@ export default function Recordings(){
 
     const getVideos = useCallback(async () => {
         if (userData) {
-            const response = await axios.post(`${import.meta.env.VITE_WEBSOCKET_BASE_URL}/api/user/recordings`, {
+            const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/user/recordings`, {
                 userId: userData.user?.id
             });
             setVideos(response.data.recordings);
@@ -27,7 +27,7 @@ export default function Recordings(){
        setVideos(videos.filter(video => video.id !== videoId));
 
        try {
-           await axios.delete(`${import.meta.env.VITE_WEBSOCKET_BASE_URL}/api/user/delete`, {
+           await axios.delete(`${import.meta.env.VITE_SERVER_URL}/api/user/delete`, {
                data: {
                    userId: userData.user?.id,
                    recordingKey: videoId,

@@ -33,7 +33,7 @@ export default function Navbar() {
     async function checkUser(){
         if(user && user.id){
             try {
-                const response = await axios.get(`${import.meta.env.VITE_WEBSOCKET_BASE_URL}/api/user/getuser?id=${user.id}`);
+                const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/user/getuser?id=${user.id}`);
 
                 if(response.status === 200 && !response.data.exists){
                     await addUser();

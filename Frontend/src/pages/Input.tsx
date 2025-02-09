@@ -13,7 +13,7 @@ export default function InputDemo() {
         setLink(" ")
         try {
 
-            const response = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/getMeetId`, {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_SPAWNER_URL}/getMeetId`, {
                 link: link,
             })
             toast.success(response.data.message, {
