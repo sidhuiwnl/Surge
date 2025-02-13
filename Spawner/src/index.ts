@@ -6,6 +6,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 
+
 dotenv.config();
 
 const app = express();
@@ -18,6 +19,7 @@ const corsOption = {
 app.use(cors(
     corsOption
 ))
+
 
 
 async function getBrowser(){
@@ -40,10 +42,11 @@ async function getBrowser(){
             '--disable-accelerated-2d-canvas',
             '--disable-gpu',
             '--window-size=1920,1080',
+            "--allow-running-insecure-content",
+            "--disable-web-security",
         ],
         env : {
             DISPLAY: process.env.DISPLAY || ':99',
-
         }
     })
 
@@ -64,6 +67,7 @@ async function getMeet(url : string){
 
     const scriptCode = fs.readFileSync(scriptPath,"utf-8")
 
+    console.log(scriptCode)
 
 
     const browserInstance = await getBrowser();
@@ -85,12 +89,14 @@ async function getMeet(url : string){
 
     const elementSelector = "div[jscontroller=\"yEvoid\"][jsname=\"NeC6gb\"]";
     try {
-        await page.waitForSelector(elementSelector, { timeout: 50000, visible: true });
+        await page.waitForSelector(elementSelector, { timeout: 50000,visible : true });
 
         console.log("Element found!");
 
 
         await page.evaluate(`${scriptCode}webScript();`);
+
+
 
         await page.evaluate(() => {
             return new Promise((resolve) => {
@@ -143,10 +149,22 @@ app.post("/getMeetId",(req : Request,res : Response) =>{
     }
 })
 
-//
+
+
 // getMeet("https://meet.google.com/ynt-mspg-yig")
 
 
 app.listen(3000, () => {
     console.log("Server is running on port 3000");
 })
+
+
+
+
+
+
+
+
+
+
+

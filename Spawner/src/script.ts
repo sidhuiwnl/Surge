@@ -1,9 +1,6 @@
-import dotenv from "dotenv";
 
 
-dotenv.config()
-
- function webScript(){
+function webScript(){
     console.log("before mediadevices")
 
     window.navigator.mediaDevices.getDisplayMedia({
@@ -52,7 +49,7 @@ dotenv.config()
 
 
 
-            const signalingSocket = new WebSocket(`${process.env.SERVER_URL}?type=media`);
+            const signalingSocket = new WebSocket(`ws://localhost:8080?type=media`);
             const recorder = new MediaRecorder(stream, {mimeType: 'video/webm'});
 
 
