@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build" : "tsc -b",
-    "dev": "node dist/index.js",
-    "postinstall": "npx puppeteer browsers install chrome"
+    "dev": "tsc -b && node dist/index.js"
   },
   "keywords": [],
   "author": "",
@@ -18,8 +16,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "puppeteer": "^23.11.1",
-    "puppeteer-core": "^23.11.1",
+    "puppeteer": "^24.2.0",
     "selenium-webdriver": "^4.27.0",
     "typescript": "^5.7.3"
   }

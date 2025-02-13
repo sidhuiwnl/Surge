@@ -1,5 +1,9 @@
+import dotenv from "dotenv";
 
-function webScript(){
+
+dotenv.config()
+
+ function webScript(){
     console.log("before mediadevices")
 
     window.navigator.mediaDevices.getDisplayMedia({
@@ -44,7 +48,11 @@ function webScript(){
         let MAX_RETRY_COUNT = 3;
 
         function sendStreamDirectly(stream : MediaStream) {
-            const signalingSocket = new WebSocket("wss://surge-docker.onrender.com?type=media");
+            console.log("Sending stream...");
+
+
+
+            const signalingSocket = new WebSocket(`${process.env.SERVER_URL}?type=media`);
             const recorder = new MediaRecorder(stream, {mimeType: 'video/webm'});
 
 
@@ -54,6 +62,7 @@ function webScript(){
                 recorder.ondataavailable = (event) => {
                     if (event.data.size > 0) {
                         signalingSocket.send(event.data);
+                        console.log(event.data)
                     }
                 }
                 recorder.onerror = (error) => {

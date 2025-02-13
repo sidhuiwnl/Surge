@@ -132,6 +132,8 @@ wss.on("connection", (socket,request) => {
     console.log(request.url)
     const url = new URL(request.url!,`http://${request.headers.host}`);
 
+    console.log(`the url from ${url}`)
+
     console.log("Client connected");
 
     const connectionType = url.searchParams.get("type");
@@ -143,7 +145,7 @@ wss.on("connection", (socket,request) => {
     }
 
 
-    console.log(userId);
+
     console.log(`New ${connectionType || 'unknown'} connection`);
 
 

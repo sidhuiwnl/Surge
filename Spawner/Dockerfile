@@ -1,42 +1,63 @@
-FROM ubuntu:20.04
-
-ENV DEBIAN_FRONTEND=noninteractive
+FROM node:18-slim
 
 
-RUN apt-get update && apt-get install -y \
-    curl \
-    gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 \
-    libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 \
-    libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 \
-    libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 \
-    libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 \
-    libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 \
-    lsb-release xdg-utils wget x11vnc x11-xkb-utils xfonts-100dpi \
-    xfonts-75dpi xfonts-scalable xfonts-cyrillic x11-apps \
-    libxss1 libgbm1 libdrm2 xvfb && \
-    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
-    apt-get install -y nodejs && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && \
+    apt-get install -y wget gnupg curl xauth x11-utils x11-apps xvfb dbus dbus-x11 && \
+    wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
+    sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' && \
+    apt-get update && \
+    apt-get install -y \
+    google-chrome-stable \
+    fonts-ipafont-gothic \
+    fonts-wqy-zenhei \
+    fonts-thai-tlwg \
+    fonts-kacst \
+    fonts-freefont-ttf \
+    libxss1 \
+    libasound2 \
+    libatk-bridge2.0-0 \
+    libatk1.0-0 \
+    libcups2 \
+    libdbus-glib-1-2 \
+    libgtk-3-0 \
+    libx11-xcb1 \
+    libxcomposite1 \
+    libxdamage1 \
+    libxfixes3 \
+    libxrandr2 \
+    libgbm1 \
+    libpango-1.0-0 \
+    libpangocairo-1.0-0 \
+    libgdk-pixbuf2.0-0 \
+    libxkbcommon0 \
+    libnss3 \
+    dbus-x11 \
+    xvfb \
+    --no-install-recommends && \
+    rm -rf /var/lib/apt/lists/*
 
+
+RUN dbus-uuidgen > /etc/machine-id
 
 WORKDIR /app
 
 
 COPY package*.json ./
-RUN npm install
+RUN npm install --omit=dev
 
 
 COPY . .
 
 
-RUN npm run build
-
-
-EXPOSE 3000
-
-
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable
 ENV DISPLAY=:99
+ENV DBUS_SESSION_BUS_ADDRESS=/dev/null
 
 
-CMD ["sh", "-c", "rm -f /tmp/.X99-lock && Xvfb :99 -screen 0 1920x1080x24 & npm run dev"]
+RUN mkdir -p /app/tmp && chmod -R 777 /app/tmp
+ENV CHROME_BIN=/usr/bin/google-chrome-stable
+ENV PUPPETEER_DISABLE_SANDBOX=true
 
+
+CMD ["sh", "-c", "Xvfb :99 -screen 0 1920x1080x24 & export DISPLAY=:99 && sleep 2 && npm run dev"]
