@@ -1,9 +1,11 @@
+import dotenv from "dotenv";
 import ffmpeg from "fluent-ffmpeg";
+
 import * as path from "node:path";
 const fs = require('fs').promises;
 import {GoogleGenerativeAI} from "@google/generative-ai";
 import {GoogleAIFileManager,FileState} from "@google/generative-ai/server";
-
+dotenv.config();
 
 const fileManager = new GoogleAIFileManager(process.env.GOOGLE_API_KEY as string);
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY as string);
@@ -58,9 +60,9 @@ async function transcribeAudio(audioPath : string){
         let file = await fileManager.getFile(uploadResult.file.name);
         while (file.state === FileState.PROCESSING) {
             process.stdout.write(".");
-            // Sleep for 10 seconds
+
             await new Promise((resolve) => setTimeout(resolve, 10_000));
-            // Fetch the file from the API again
+
             file = await fileManager.getFile(uploadResult.file.name);
         }
         if (file.state === FileState.FAILED) {

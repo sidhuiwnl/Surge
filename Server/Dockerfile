@@ -29,7 +29,7 @@ COPY . .
 EXPOSE 8080
 
 
-ENV DATABASE_URL="postgresql://default:password@localhost/db"
+
 
 
 CMD ["npm", "run", "dev"]
