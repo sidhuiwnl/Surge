@@ -1,5 +1,9 @@
+import {Badge} from "@/components/ui/badge.tsx";
+
 export default function About() {
     return (
+
+
         <div className="p-7 flex flex-col gap-3 justify-center items-center mt-20 ">
             <h1>OverView</h1>
             <p className="max-w-4xl mb-20 leading-10">
@@ -9,10 +13,10 @@ export default function About() {
             <p className="max-w-4xl leading-10">
 
                 Meeting Recording: Captures and stores meeting audio/video.
-                AI-Powered Summaries: Uses Google Gemini AI to generate concise and informative meeting summaries.
+                AI-Powered Summaries: Uses <Badge className="bg-white text-black mr-2 hover:bg-white ">Google Gemini AI</Badge> to generate concise and informative meeting summaries.
                 Platform Integration: Works with Google Meet, Zoom, and other virtual meeting platforms.
-                Real-Time Streaming: WebSocket implementation for low-latency recording and streaming.
-                Database Storage: Utilizes PostgreSQL and Prisma ORM for data management.
+                Real-Time Streaming: <Badge className="bg-white text-black mr-2 hover:bg-white">WebSocket</Badge> implementation for low-latency recording and streaming.
+                Database Storage: Utilizes <Badge className="bg-white text-black mr-2 hover:bg-white">PostgreSQL</Badge> and <Badge className="bg-white text-black mr-2 hover:bg-white">Prisma ORM</Badge> for data management.
             </p>
         </div>
     )
