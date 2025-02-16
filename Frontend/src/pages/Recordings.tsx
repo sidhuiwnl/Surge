@@ -48,7 +48,7 @@ export default function Recordings(){
 
     return(
         <div className="p-7 flex flex-col gap-5">
-            <div className="flex flex-row items-center gap-2">
+            <div className="flex flex-row items-center gap-2 ml-52">
                 <Clapperboard size="35"/>
                 <h1 className="font-bold text-4xl">Videos</h1>
             </div>

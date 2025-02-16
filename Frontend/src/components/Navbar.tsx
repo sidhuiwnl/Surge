@@ -54,7 +54,7 @@ export default function Navbar() {
                 Surge
             </NavLink>
             <div className="flex gap-6">
-                <NavLink to={"/login"} className="text-sm">
+                <NavLink to={"/about"} className="text-sm">
                     About
                 </NavLink>
                 <NavLink to={"/add"} className="text-sm">

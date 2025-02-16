@@ -29,7 +29,7 @@ export function VideoCard({
     if (videoData.length === 0) {
         return (
             <div className="container mx-auto flex items-center justify-center py-32 h-full w-full overflow-hidden">
-                <LoaderCircle className="animate-spin w-8 h-8 text-neutral-500" />
+               <p>There is no Videos Recording to Show</p>
             </div>
         );
     }

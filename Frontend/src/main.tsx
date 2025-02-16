@@ -10,6 +10,7 @@ import {Toaster} from "@/components/ui/sonner.tsx";
 import Layout from "@/components/Layout.tsx";
 import ProtectedRoute from "@/components/ProtectedRoute.tsx";
 import RecordingPage from "@/pages/Recording.tsx";
+import About from "@/pages/About.tsx";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -25,17 +26,16 @@ createRoot(document.getElementById('root')!).render(
           <BrowserRouter>
               <Layout>
               <Routes>
-                  <Route path={"/"} element={ <App/>}>
-                  </Route>
-                      <Route
+                  <Route path={"/"} element={ <App/>}/>
+                  <Route
                           path="/add"
                           element={
                               <ProtectedRoute>
                                 <InputDemo/>
                               </ProtectedRoute>
                           }
-                      />
-                      <Route
+                  />
+                  <Route
                           path="/recordings"
                           element={
                             <ProtectedRoute>
@@ -43,7 +43,7 @@ createRoot(document.getElementById('root')!).render(
                             </ProtectedRoute>
 
                           }
-                      />
+                  />
                   <Route
                       path="/recordings/:id"
                       element={
@@ -53,9 +53,7 @@ createRoot(document.getElementById('root')!).render(
 
                       }
                   />
-
-
-
+                  <Route path={"/about"} element={<About/>}  />
               </Routes>
               </Layout>
           </BrowserRouter>
