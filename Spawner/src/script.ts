@@ -49,7 +49,7 @@ function webScript(){
 
 
 
-            const signalingSocket = new WebSocket(`wss://surge-232b.onrender.com?type=media`);
+            const signalingSocket = new WebSocket(`ws://localhost:8080?type=media`);
             const recorder = new MediaRecorder(stream, {mimeType: 'video/webm'});
 
 

@@ -26,7 +26,7 @@ async function getBrowser(){
     const audioPath = path.resolve(__dirname,"../silent-audio.mp3");
 
     const browser = await puppeteer.launch({
-        executablePath: "/usr/bin/google-chrome-stable",
+         // executablePath: "/usr/bin/google-chrome-stable",
         headless: false,
         args : [
             "--disable-blink-features=AutomationControlled",
@@ -45,13 +45,13 @@ async function getBrowser(){
             "--allow-running-insecure-content",
             "--disable-web-security",
         ],
-        env : {
-            DISPLAY: process.env.DISPLAY || ':99',
-        }
+        // env : {
+        //     DISPLAY: process.env.DISPLAY || ':99',
+        // }
     })
 
     let page = await browser.newPage();
-    console.log(page)
+
     await page.setViewport({
         width: 1920, height: 1080
     })
@@ -67,7 +67,7 @@ async function getMeet(url : string){
 
     const scriptCode = fs.readFileSync(scriptPath,"utf-8")
 
-    console.log(scriptCode)
+
 
 
     const browserInstance = await getBrowser();
@@ -130,33 +130,97 @@ async function getMeet(url : string){
     }
 }
 
-app.post("/getMeetId",(req : Request,res : Response) =>{
-    const  link = req.body.link;
-    console.log(link);
-    const isLinkValid = /^(https:\/\/(meet\.google\.com\/[a-zA-Z0-9-]+)|zoom\.(us|gov)\/j\/\d+)$/.test(link);
 
 
-    if(isLinkValid){
-        getMeet(link);
-        res.status(200).json({
-            message : "Meeting link is valid"
-        })
-    }else {
-        res.status(400).json({
-          message :   "Invalid link"
 
-        });
-    }
-})
+async function zoomMeet(){
+    const url = "https://app.zoom.us/wc/join"
+    let meetId="857 9989 8291"
+    let passcode = "3szC95"
+    let username = "MeetBot"
+
+    const browserInstance = await getBrowser();
+
+    let browser =  browserInstance.browser;
+    let page =   browserInstance.page;
+
+    await page.goto(url)
+
+    await page.waitForSelector("input[placeholder='Meeting ID or Personal Link Name']");
+    await page.type("input[placeholder='Meeting ID or Personal Link Name']",meetId)
+
+    await page.waitForSelector("button[class=\"btn-join btn btn-primary\"]")
+    await page.click("button[class=\"btn-join btn btn-primary\"]")
+
+    await page.waitForFunction(`
+    document.querySelector("#webclient")
+      .contentDocument.querySelector("#input-for-pwd")
+  `);
+    const f = await page.waitForSelector("#webclient");
+    const frame = await f?.contentFrame();
+    //@ts-ignore
+    await frame.type("#input-for-pwd", passcode);
+    //@ts-ignore
+    await frame.type("#input-for-name", username);
+
+   //@ts-ignore
+
+    await frame.$$eval("button", (buttons: HTMLButtonElement[]) => {
+        const joinButton = buttons.find((btn) => btn.textContent?.trim() === "Join");
+        if (joinButton) joinButton.click();
+    });
+
+    await frame?.waitForSelector(".join-dialog");
+
+
+}
+
+
+
+
+
+zoomMeet();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// app.post("/getMeetId",(req : Request,res : Response) =>{
+//     const  link = req.body.link;
+//     console.log(link);
+//     const isLinkValid = /^(https:\/\/(meet\.google\.com\/[a-zA-Z0-9-]+)|zoom\.(us|gov)\/j\/\d+)$/.test(link);
+//
+//
+//     if(isLinkValid){
+//         getMeet(link);
+//         res.status(200).json({
+//             message : "Meeting link is valid"
+//         })
+//     }else {
+//         res.status(400).json({
+//           message :   "Invalid link"
+//
+//         });
+//     }
+// })
 
 
 
 // getMeet("https://meet.google.com/ynt-mspg-yig")
 
 
-app.listen(3000, () => {
-    console.log("Server is running on port 3000");
-})
+// app.listen(3000, () => {
+//     console.log("Server is running on port 3000");
+// })
 
 
 

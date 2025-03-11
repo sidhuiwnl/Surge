@@ -2,7 +2,7 @@ services:
   frontend:
 
     build:
-      context: .
+      context: ../frontend
     ports:
       - "${PORT:-5173}:5173"
     depends_on:
@@ -21,7 +21,7 @@ services:
     ports:
       - "${SERVER_PORT:-8080}:8080"
     env_file:
-      - .env
+      - ../frontend/.env
     networks:
       - surge
     volumes:
@@ -33,7 +33,7 @@ services:
   spawner:
     build:
       context: ../spawner
-      dockerfile: Dockerfile
+      dockerfile: ../spawner/Dockerfile
     volumes:
       - ../spawner:/app
     networks:
